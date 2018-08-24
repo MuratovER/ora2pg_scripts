@@ -14,11 +14,11 @@ try:
     cur.execute("INSERT INTO Products VALUES(4,'Bread',5)")
     cur.execute("INSERT INTO Products VALUES(5,'Oranges',3)")
     con.commit()
-except psycopg2.DatabaseError, e:
+except (psycopg2.DatabaseError, e):
     if con:
         con.rollback()
  
-    print 'Error %s' % e    
+    print('Error %s' % e)    
     sys.exit(1)
  
 finally:   
