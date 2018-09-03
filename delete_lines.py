@@ -1,3 +1,12 @@
+import os
+
+#folder with files
+directory = 'C:/test1'
+
+#get the list of the files
+files = os.listdir(directory)
+print(len(files))
+
 for f in files:
 
     with open(directory + '/' + f, 'r') as file_in:
@@ -25,5 +34,3 @@ for f in files:
     print(text)
     with open(directory + '/' + f, "w") as file_out:
         file_out.write(text)
-            
-
