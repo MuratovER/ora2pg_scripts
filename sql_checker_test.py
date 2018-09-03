@@ -26,7 +26,7 @@ for file_name in files:
         print("_____________")
         try:
             #establishing connetction to db
-            con = psycopg2.connect("host='localhost' dbname='prophet' user='postgres' password='1'")   
+            con = psycopg2.connect("host='localhost' dbname='dbname' user='postgres' password='1'")   
             cur = con.cursor()
             #query executing
             cur.execute(text)
