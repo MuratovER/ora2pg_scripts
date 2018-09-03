@@ -7,7 +7,9 @@ The `Python` scripts helps with automation executing the SQL-output code, genera
 
 #### Preparations
 You can specify your structure, but by default, script expects this structure.
+
 ![Folders](https://raw.githubusercontent.com/nurgalive/ora2pg_scripts/master/materials/1.png)
+
 SQL-files for the executing need to put in the `check` folder.
 After execution, files executed without error will be moved to the `ready` folder, and the name of the file will be added the sequence number `query1.sql` -> `1_query1.sql`
 The files, which executed with errors will be moved to the `error` folder.
