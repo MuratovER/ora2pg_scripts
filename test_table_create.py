@@ -1,7 +1,6 @@
 import psycopg2
 import sys
  
- 
 con = None
  
 try:
