@@ -1,48 +1,54 @@
 import psycopg2
 import sys
 import os
-con = None
+from datetime import datetime
 
+con = None
+#directory with files, that will be checked
 directory = 'C:\\test\\check'
 files = os.listdir(directory)
 print("Number of files: " + str(len(files)))
-print(files)
+#print all files in the directory \\check
+#print(files)
 
-error_count = 1
+#count for naming the files
 succ_count = 1
-for f in files:
+time = datetime.now().strftime('%Y-%m-%d_%H-%M')
 
+for file_name in files:
+    #open every file
     with open(directory + '/' + f, 'r') as file_in:
-        text = file_in.read();
-        print("Query:")
-        print(text)
-        print("_____________")
+        text = file_in.read()
+        #print("Query:")
+        #print(text)
+        #print("_____________")
         try:
-            con = psycopg2.connect("host='localhost' dbname='testdb' user='postgres' password='1'")   
+            #establishing connetction to db
+            con = psycopg2.connect("host='localhost' dbname='dbname' user='postgres' password='1'")   
             cur = con.cursor()
+            #query execution
             cur.execute(text)
-            while True:
-                row = cur.fetchone()
- 
-                if row == None:
-                    break
- 
-                print("Product: " + row[1] + "\t\tPrice: " + str(row[2]))
-       # con.commit()
-        except psycopg2.DatabaseError as e:
+            con.commit()
+        except (psycopg2.DatabaseError as e):
+            #if error happens, sql file moves to folder \\error
             if con:
                 con.rollback()
 
             print('Error %s' % e)    
-            #sys.exit(1)
-            #sys.exit(0)
-            file_in.close();
-            os.rename("C:\\test\\check\\" + f, "C:\\test\\error\\" + str(error_count) + '_' + f)
-            error_count +=1
+            file_in.close()
+            #moving to file to folder \error
+            os.rename("C:\\test\\check\\" + file_name, "C:\\test\\error\\" + file_name)
+            with open(directory + '/' + time + '.log', "a") as file_out:
+                file_out.write(file_name + "\n")
+                file_out.write(e + "\n")
+                file_out.write("\n" + "\n" + "\n")
+            
             
         else:
-            file_in.close();
-            os.rename("C:\\test\\check\\" + f, "C:\\test\\ready\\" + str(succ_count) + '_' + f)
+            #if there is no erros, file moved to folder \\ready
+            file_in.close()
+            #moving the file
+            os.rename("C:\\test\\check\\" + file_name, "C:\\test\\ready\\" + str(succ_count) + '_' + file_name)
             succ_count +=1
             
 
@@ -50,4 +56,4 @@ for f in files:
             if con:
                 con.close()
         
-        print("\n")
+        #print("\n")
